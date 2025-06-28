@@ -28,7 +28,7 @@ const Index = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Excel Chart Canvas
+            Zidio
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Upload your Excel file and create beautiful interactive charts with dynamic column selection
