@@ -19,21 +19,21 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({
   onYColumnChange,
 }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-white rounded-lg shadow-lg border">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
       <div className="space-y-3">
-        <Label htmlFor="x-axis" className="text-sm font-semibold text-gray-700">
+        <Label htmlFor="x-axis" className="text-sm font-semibold text-gray-200">
           X-Axis Column
         </Label>
         <Select value={xColumn} onValueChange={onXColumnChange}>
-          <SelectTrigger id="x-axis" className="w-full h-12 border-2 border-gray-200 hover:border-blue-300 transition-colors">
+          <SelectTrigger id="x-axis" className="w-full h-12 border-2 border-gray-600 bg-gray-700 text-gray-200 hover:border-blue-500 transition-colors">
             <SelectValue placeholder="Select X-axis column" />
           </SelectTrigger>
-          <SelectContent className="bg-white border-2 border-gray-200 shadow-xl z-50">
+          <SelectContent className="bg-gray-700 border-2 border-gray-600 shadow-xl z-50">
             {columns.map((column) => (
               <SelectItem 
                 key={column} 
                 value={column}
-                className="hover:bg-blue-50 cursor-pointer py-3 px-4"
+                className="hover:bg-gray-600 cursor-pointer py-3 px-4 text-gray-200"
               >
                 {column}
               </SelectItem>
@@ -43,19 +43,19 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({
       </div>
 
       <div className="space-y-3">
-        <Label htmlFor="y-axis" className="text-sm font-semibold text-gray-700">
+        <Label htmlFor="y-axis" className="text-sm font-semibold text-gray-200">
           Y-Axis Column
         </Label>
         <Select value={yColumn} onValueChange={onYColumnChange}>
-          <SelectTrigger id="y-axis" className="w-full h-12 border-2 border-gray-200 hover:border-blue-300 transition-colors">
+          <SelectTrigger id="y-axis" className="w-full h-12 border-2 border-gray-600 bg-gray-700 text-gray-200 hover:border-blue-500 transition-colors">
             <SelectValue placeholder="Select Y-axis column" />
           </SelectTrigger>
-          <SelectContent className="bg-white border-2 border-gray-200 shadow-xl z-50">
+          <SelectContent className="bg-gray-700 border-2 border-gray-600 shadow-xl z-50">
             {columns.map((column) => (
               <SelectItem 
                 key={column} 
                 value={column}
-                className="hover:bg-blue-50 cursor-pointer py-3 px-4"
+                className="hover:bg-gray-600 cursor-pointer py-3 px-4 text-gray-200"
               >
                 {column}
               </SelectItem>
