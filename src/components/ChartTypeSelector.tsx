@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChartBar, ChartLine, ChartArea, ChartPie, Radar, Histogram } from 'lucide-react';
+import { ChartBar, ChartLine, ChartArea, ChartPie, Radar, BarChart3 } from 'lucide-react';
 
 interface ChartTypeSelectorProps {
   chartType: 'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram';
@@ -18,7 +18,7 @@ const ChartTypeSelector: React.FC<ChartTypeSelectorProps> = ({
     { type: 'area' as const, label: 'Area Chart', icon: ChartArea },
     { type: 'pie' as const, label: 'Pie Chart', icon: ChartPie },
     { type: 'radar' as const, label: 'Radar Chart', icon: Radar },
-    { type: 'histogram' as const, label: 'Histogram', icon: Histogram },
+    { type: 'histogram' as const, label: 'Histogram', icon: BarChart3 },
   ];
 
   return (
