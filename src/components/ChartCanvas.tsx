@@ -1,3 +1,4 @@
+
 import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import {
   Chart as ChartJS,
@@ -41,10 +42,10 @@ export interface ChartCanvasRef {
 }
 
 const ChartCanvas = forwardRef<ChartCanvasRef, ChartCanvasProps>(({ data, xColumn, yColumn, chartType }, ref) => {
-  const chartRef = useRef<HTMLCanvasElement>(null);
+  const chartRef = useRef<ChartJS>(null);
 
   useImperativeHandle(ref, () => ({
-    getCanvas: () => chartRef.current,
+    getCanvas: () => chartRef.current?.canvas || null,
   }));
 
   if (!data.length || !xColumn || !yColumn) {

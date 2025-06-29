@@ -79,7 +79,7 @@ const Results = () => {
           <div className="flex items-center space-x-3">
             <ExportControls 
               data={data} 
-              chartRef={{ current: chartRef.current?.getCanvas() || null }}
+              chartRef={chartRef}
               chartTitle={`${displayYColumn}_vs_${displayXColumn}`}
             />
             <ThemeToggle />

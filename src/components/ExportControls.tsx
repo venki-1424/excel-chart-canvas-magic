@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import {
@@ -10,17 +10,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { downloadChart, downloadExcelData } from '@/utils/exportUtils';
+import { ChartCanvasRef } from '@/components/ChartCanvas';
 
 interface ExportControlsProps {
   data: any[];
-  chartRef?: React.RefObject<HTMLCanvasElement>;
+  chartRef?: React.RefObject<ChartCanvasRef>;
   chartTitle?: string;
 }
 
 const ExportControls: React.FC<ExportControlsProps> = ({ data, chartRef, chartTitle = 'chart' }) => {
   const handleChartDownload = async (format: 'png' | 'pdf') => {
-    if (chartRef?.current) {
-      await downloadChart(chartRef.current, chartTitle, format);
+    const canvas = chartRef?.current?.getCanvas();
+    if (canvas) {
+      await downloadChart(canvas, chartTitle, format);
     }
   };
 
