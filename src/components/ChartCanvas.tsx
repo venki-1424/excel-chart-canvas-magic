@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -37,7 +36,17 @@ interface ChartCanvasProps {
   chartType: 'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram';
 }
 
-const ChartCanvas: React.FC<ChartCanvasProps> = ({ data, xColumn, yColumn, chartType }) => {
+export interface ChartCanvasRef {
+  getCanvas: () => HTMLCanvasElement | null;
+}
+
+const ChartCanvas = forwardRef<ChartCanvasRef, ChartCanvasProps>(({ data, xColumn, yColumn, chartType }, ref) => {
+  const chartRef = useRef<HTMLCanvasElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    getCanvas: () => chartRef.current,
+  }));
+
   if (!data.length || !xColumn || !yColumn) {
     return (
       <div className="flex items-center justify-center h-96 bg-gray-800 rounded-lg border-2 border-dashed border-gray-600">
@@ -171,27 +180,35 @@ const ChartCanvas: React.FC<ChartCanvasProps> = ({ data, xColumn, yColumn, chart
   };
 
   const renderChart = () => {
+    const chartProps = { 
+      data: chartData, 
+      options,
+      ref: chartRef
+    };
+
     switch (chartType) {
       case 'bar':
       case 'histogram':
-        return <Bar data={chartData} options={options} />;
+        return <Bar {...chartProps} />;
       case 'line':
       case 'area':
-        return <Line data={chartData} options={options} />;
+        return <Line {...chartProps} />;
       case 'pie':
-        return <Pie data={chartData} options={options} />;
+        return <Pie {...chartProps} />;
       case 'radar':
-        return <Radar data={chartData} options={options} />;
+        return <Radar {...chartProps} />;
       default:
-        return <Bar data={chartData} options={options} />;
+        return <Bar {...chartProps} />;
     }
   };
 
   return (
-    <div className="h-96 w-full bg-gray-800 rounded-lg shadow-lg p-4 border border-gray-700">
+    <div className="h-96 w-full bg-background border rounded-lg shadow-lg p-4">
       {renderChart()}
     </div>
   );
-};
+});
+
+ChartCanvas.displayName = 'ChartCanvas';
 
 export default ChartCanvas;
