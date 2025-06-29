@@ -16,11 +16,39 @@ const Results = () => {
   const [xColumn, setXColumn] = useState<string>(columns[0] || '');
   const [yColumn, setYColumn] = useState<string>(columns[1] || '');
   const [chartType, setChartType] = useState<'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram'>('bar');
+  
+  // Preview states for hover functionality
+  const [previewXColumn, setPreviewXColumn] = useState<string>('');
+  const [previewYColumn, setPreviewYColumn] = useState<string>('');
+  const [previewChartType, setPreviewChartType] = useState<'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram' | ''>('');
 
   if (!data || data.length === 0) {
     navigate('/');
     return null;
   }
+
+  const handleXColumnHover = (column: string) => {
+    setPreviewXColumn(column);
+  };
+
+  const handleYColumnHover = (column: string) => {
+    setPreviewYColumn(column);
+  };
+
+  const handleChartTypeHover = (type: 'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram') => {
+    setPreviewChartType(type);
+  };
+
+  const handleHoverEnd = () => {
+    setPreviewXColumn('');
+    setPreviewYColumn('');
+    setPreviewChartType('');
+  };
+
+  // Use preview values if hovering, otherwise use selected values
+  const displayXColumn = previewXColumn || xColumn;
+  const displayYColumn = previewYColumn || yColumn;
+  const displayChartType = previewChartType || chartType;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
@@ -56,11 +84,16 @@ const Results = () => {
             yColumn={yColumn}
             onXColumnChange={setXColumn}
             onYColumnChange={setYColumn}
+            onXColumnHover={handleXColumnHover}
+            onYColumnHover={handleYColumnHover}
+            onHoverEnd={handleHoverEnd}
           />
           
           <ChartTypeSelector
             chartType={chartType}
             onChartTypeChange={setChartType}
+            onChartTypeHover={handleChartTypeHover}
+            onHoverEnd={handleHoverEnd}
           />
         </div>
 
@@ -68,9 +101,9 @@ const Results = () => {
         <div className="mb-8">
           <ChartCanvas
             data={data}
-            xColumn={xColumn}
-            yColumn={yColumn}
-            chartType={chartType}
+            xColumn={displayXColumn}
+            yColumn={displayYColumn}
+            chartType={displayChartType}
           />
         </div>
 
@@ -87,12 +120,12 @@ const Results = () => {
               <div className="text-sm text-gray-400">Columns</div>
             </div>
             <div className="bg-purple-900/50 rounded-lg p-4 border border-purple-800">
-              <div className="text-2xl font-bold text-purple-400">{xColumn || 'None'}</div>
-              <div className="text-sm text-gray-400">X-Axis</div>
+              <div className="text-2xl font-bold text-purple-400">{displayXColumn || 'None'}</div>
+              <div className="text-sm text-gray-400">X-Axis {previewXColumn && '(Preview)'}</div>
             </div>
             <div className="bg-orange-900/50 rounded-lg p-4 border border-orange-800">
-              <div className="text-2xl font-bold text-orange-400">{yColumn || 'None'}</div>
-              <div className="text-sm text-gray-400">Y-Axis</div>
+              <div className="text-2xl font-bold text-orange-400">{displayYColumn || 'None'}</div>
+              <div className="text-sm text-gray-400">Y-Axis {previewYColumn && '(Preview)'}</div>
             </div>
           </div>
         </div>

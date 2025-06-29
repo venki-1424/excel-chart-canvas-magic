@@ -6,11 +6,15 @@ import { ChartBar, ChartLine, ChartArea, ChartPie, Radar, BarChart3 } from 'luci
 interface ChartTypeSelectorProps {
   chartType: 'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram';
   onChartTypeChange: (type: 'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram') => void;
+  onChartTypeHover?: (type: 'bar' | 'line' | 'area' | 'pie' | 'radar' | 'histogram') => void;
+  onHoverEnd?: () => void;
 }
 
 const ChartTypeSelector: React.FC<ChartTypeSelectorProps> = ({
   chartType,
   onChartTypeChange,
+  onChartTypeHover,
+  onHoverEnd,
 }) => {
   const chartTypes = [
     { type: 'bar' as const, label: 'Bar Chart', icon: ChartBar },
@@ -30,6 +34,8 @@ const ChartTypeSelector: React.FC<ChartTypeSelectorProps> = ({
             key={type}
             variant={chartType === type ? "default" : "outline"}
             onClick={() => onChartTypeChange(type)}
+            onMouseEnter={() => onChartTypeHover?.(type)}
+            onMouseLeave={onHoverEnd}
             className={`h-16 flex flex-col items-center space-y-2 transition-all duration-200 ${
               chartType === type 
                 ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg' 

@@ -9,6 +9,9 @@ interface ColumnSelectorProps {
   yColumn: string;
   onXColumnChange: (column: string) => void;
   onYColumnChange: (column: string) => void;
+  onXColumnHover?: (column: string) => void;
+  onYColumnHover?: (column: string) => void;
+  onHoverEnd?: () => void;
 }
 
 const ColumnSelector: React.FC<ColumnSelectorProps> = ({
@@ -17,6 +20,9 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({
   yColumn,
   onXColumnChange,
   onYColumnChange,
+  onXColumnHover,
+  onYColumnHover,
+  onHoverEnd,
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
@@ -28,12 +34,16 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({
           <SelectTrigger id="x-axis" className="w-full h-12 border-2 border-gray-600 bg-gray-700 text-gray-200 hover:border-blue-500 transition-colors">
             <SelectValue placeholder="Select X-axis column" />
           </SelectTrigger>
-          <SelectContent className="bg-gray-700 border-2 border-gray-600 shadow-xl z-50">
+          <SelectContent 
+            className="bg-gray-700 border-2 border-gray-600 shadow-xl z-50"
+            onPointerLeave={onHoverEnd}
+          >
             {columns.map((column) => (
               <SelectItem 
                 key={column} 
                 value={column}
                 className="hover:bg-gray-600 cursor-pointer py-3 px-4 text-gray-200"
+                onMouseEnter={() => onXColumnHover?.(column)}
               >
                 {column}
               </SelectItem>
@@ -50,12 +60,16 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({
           <SelectTrigger id="y-axis" className="w-full h-12 border-2 border-gray-600 bg-gray-700 text-gray-200 hover:border-blue-500 transition-colors">
             <SelectValue placeholder="Select Y-axis column" />
           </SelectTrigger>
-          <SelectContent className="bg-gray-700 border-2 border-gray-600 shadow-xl z-50">
+          <SelectContent 
+            className="bg-gray-700 border-2 border-gray-600 shadow-xl z-50"
+            onPointerLeave={onHoverEnd}
+          >
             {columns.map((column) => (
               <SelectItem 
                 key={column} 
                 value={column}
                 className="hover:bg-gray-600 cursor-pointer py-3 px-4 text-gray-200"
+                onMouseEnter={() => onYColumnHover?.(column)}
               >
                 {column}
               </SelectItem>
