@@ -42,10 +42,34 @@ export interface ChartCanvasRef {
 }
 
 const ChartCanvas = forwardRef<ChartCanvasRef, ChartCanvasProps>(({ data, xColumn, yColumn, chartType }, ref) => {
-  const chartRef = useRef<ChartJS>(null);
+  const barChartRef = useRef<ChartJS<'bar'>>(null);
+  const lineChartRef = useRef<ChartJS<'line'>>(null);
+  const pieChartRef = useRef<ChartJS<'pie'>>(null);
+  const radarChartRef = useRef<ChartJS<'radar'>>(null);
 
   useImperativeHandle(ref, () => ({
-    getCanvas: () => chartRef.current?.canvas || null,
+    getCanvas: () => {
+      let currentRef = null;
+      switch (chartType) {
+        case 'bar':
+        case 'histogram':
+          currentRef = barChartRef.current;
+          break;
+        case 'line':
+        case 'area':
+          currentRef = lineChartRef.current;
+          break;
+        case 'pie':
+          currentRef = pieChartRef.current;
+          break;
+        case 'radar':
+          currentRef = radarChartRef.current;
+          break;
+        default:
+          currentRef = barChartRef.current;
+      }
+      return currentRef?.canvas || null;
+    },
   }));
 
   if (!data.length || !xColumn || !yColumn) {
@@ -181,25 +205,19 @@ const ChartCanvas = forwardRef<ChartCanvasRef, ChartCanvasProps>(({ data, xColum
   };
 
   const renderChart = () => {
-    const chartProps = { 
-      data: chartData, 
-      options,
-      ref: chartRef
-    };
-
     switch (chartType) {
       case 'bar':
       case 'histogram':
-        return <Bar {...chartProps} />;
+        return <Bar data={chartData} options={options} ref={barChartRef} />;
       case 'line':
       case 'area':
-        return <Line {...chartProps} />;
+        return <Line data={chartData} options={options} ref={lineChartRef} />;
       case 'pie':
-        return <Pie {...chartProps} />;
+        return <Pie data={chartData} options={options} ref={pieChartRef} />;
       case 'radar':
-        return <Radar {...chartProps} />;
+        return <Radar data={chartData} options={options} ref={radarChartRef} />;
       default:
-        return <Bar {...chartProps} />;
+        return <Bar data={chartData} options={options} ref={barChartRef} />;
     }
   };
 
